@@ -21,6 +21,10 @@ export async function POST(request: NextRequest) {
     }
 
     const db = await getDb()
+
+    // Ensure unique index on email (idempotent)
+    await db.collection('users').createIndex({ email: 1 }, { unique: true })
+
     const existingUser = await db.collection('users').findOne({
       email: email.toLowerCase(),
     })

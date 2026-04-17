@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { getDb } from '@/lib/mongodb'
+import { ObjectId } from 'mongodb'
 
 export async function PATCH(request: NextRequest) {
   try {
@@ -24,9 +25,17 @@ export async function PATCH(request: NextRequest) {
       updateFields.name = body.name
     }
 
+    if (body.installmentPlan && [4, 8, 12].includes(body.installmentPlan)) {
+      updateFields.installmentPlan = body.installmentPlan
+    }
+
+    if (typeof body.cardPayPercent === 'number' && body.cardPayPercent >= 0 && body.cardPayPercent <= 100) {
+      updateFields.cardPayPercent = body.cardPayPercent
+    }
+
     const db = await getDb()
     await db.collection('users').updateOne(
-      { _id: session.user.id },
+      { _id: new ObjectId(session.user.id) },
       { $set: updateFields }
     )
 
@@ -49,11 +58,18 @@ export async function GET() {
 
     const db = await getDb()
     const user = await db.collection('users').findOne(
-      { _id: session.user.id },
+      { _id: new ObjectId(session.user.id) },
       { projection: { passwordHash: 0, plaidAccessToken: 0 } }
     )
 
-    return NextResponse.json({ user })
+    // Also fetch points balance
+    const balance = await db.collection('pointsBalances').findOne({
+      userId: session.user.id,
+    })
+
+    return NextResponse.json({
+      user: { ...user, pointsBalance: balance?.balance ?? 0 },
+    })
   } catch (error) {
     console.error('Settings fetch error:', error)
     return NextResponse.json(

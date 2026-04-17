@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { plaidClient } from '@/lib/plaid'
 import { getDb } from '@/lib/mongodb'
+import { ObjectId } from 'mongodb'
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,7 +23,7 @@ export async function POST(request: NextRequest) {
 
     // Update user with Plaid credentials
     await db.collection('users').updateOne(
-      { _id: session.user.id },
+      { _id: new ObjectId(session.user.id) },
       {
         $set: {
           plaidAccessToken: access_token,

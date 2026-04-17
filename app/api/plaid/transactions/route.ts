@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { plaidClient } from '@/lib/plaid'
 import { getDb } from '@/lib/mongodb'
+import { ObjectId } from 'mongodb'
 
 export async function GET() {
   try {
@@ -11,7 +12,7 @@ export async function GET() {
     }
 
     const db = await getDb()
-    const user = await db.collection('users').findOne({ _id: session.user.id })
+    const user = await db.collection('users').findOne({ _id: new ObjectId(session.user.id) })
 
     if (!user?.plaidAccessToken) {
       return NextResponse.json({ error: 'No linked bank account' }, { status: 400 })

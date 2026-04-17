@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const user = await db.collection('users').findOne({ _id: session.user.id })
+    const user = await db.collection('users').findOne({ _id: new ObjectId(session.user.id) })
 
     if (!user?.stripeCustomerId) {
       return NextResponse.json(

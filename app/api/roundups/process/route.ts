@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { getDb } from '@/lib/mongodb'
 import { plaidClient } from '@/lib/plaid'
+import { ObjectId } from 'mongodb'
 
 // Process round-ups from Plaid transactions
 export async function POST(request: NextRequest) {
@@ -12,7 +13,7 @@ export async function POST(request: NextRequest) {
     }
 
     const db = await getDb()
-    const user = await db.collection('users').findOne({ _id: session.user.id })
+    const user = await db.collection('users').findOne({ _id: new ObjectId(session.user.id) })
 
     if (!user?.plaidAccessToken) {
       return NextResponse.json(
