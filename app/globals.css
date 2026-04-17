@@ -1,26 +1,75 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* RallyUp Brand Colors — Trust + Security + Excitement */
+  --color-brand-50: #eef5ff;
+  --color-brand-100: #d9e8ff;
+  --color-brand-200: #bcdbff;
+  --color-brand-300: #8ec5ff;
+  --color-brand-400: #59a4ff;
+  --color-brand-500: #3381fc;
+  --color-brand-600: #1d62f1;
+  --color-brand-700: #154dde;
+  --color-brand-800: #183fb4;
+  --color-brand-900: #19398d;
+  --color-brand-950: #0f1f4d;
+
+  --color-accent-50: #edfcf2;
+  --color-accent-100: #d4f7df;
+  --color-accent-200: #aceec4;
+  --color-accent-300: #74e0a2;
+  --color-accent-400: #3bcb7b;
+  --color-accent-500: #18b362;
+  --color-accent-600: #0b8f4d;
+  --color-accent-700: #097240;
+  --color-accent-800: #0a5a35;
+  --color-accent-900: #094a2d;
+  --color-accent-950: #042919;
+
+  --color-gold-50: #fffbeb;
+  --color-gold-100: #fff3c6;
+  --color-gold-200: #ffe588;
+  --color-gold-300: #ffd24a;
+  --color-gold-400: #ffbe20;
+  --color-gold-500: #f99b07;
+  --color-gold-600: #dd7402;
+  --color-gold-700: #b75006;
+  --color-gold-800: #943d0c;
+  --color-gold-900: #7a330d;
+  --color-gold-950: #461902;
+
+  --color-navy-50: #f0f4fd;
+  --color-navy-100: #e4eafa;
+  --color-navy-200: #cedaf6;
+  --color-navy-300: #b0c1ef;
+  --color-navy-400: #8fa0e5;
+  --color-navy-500: #747fd9;
+  --color-navy-600: #5d5fcb;
+  --color-navy-700: #4f4db2;
+  --color-navy-800: #414190;
+  --color-navy-900: #393b74;
+  --color-navy-950: #0c0e24;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #0c0e24;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0c0e24;
+    --foreground: #e4eafa;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
