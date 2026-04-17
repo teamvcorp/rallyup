@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
+import { ObjectId } from 'mongodb'
 import { stripe } from '@/lib/stripe'
 import { getDb } from '@/lib/mongodb'
 
@@ -249,12 +250,12 @@ export async function POST(request: NextRequest) {
         if (!paymentId) break // not a financing payment
 
         await db.collection('financingPayments').updateOne(
-          { _id: paymentId },
+          { _id: new ObjectId(paymentId) },
           { $set: { status: 'completed', updatedAt: new Date() } }
         )
 
         // Check if plan is fully paid
-        const payment = await db.collection('financingPayments').findOne({ _id: paymentId })
+        const payment = await db.collection('financingPayments').findOne({ _id: new ObjectId(paymentId) })
         if (payment) {
           const plan = await db.collection('financingPlans').findOne({
             _id: payment.financingPlanId,
@@ -289,7 +290,7 @@ export async function POST(request: NextRequest) {
         if (!paymentId) break
 
         await db.collection('financingPayments').updateOne(
-          { _id: paymentId },
+          { _id: new ObjectId(paymentId) },
           {
             $set: {
               status: 'failed',
@@ -300,7 +301,7 @@ export async function POST(request: NextRequest) {
         )
 
         // Log for potential defaulting
-        const payment = await db.collection('financingPayments').findOne({ _id: paymentId })
+        const payment = await db.collection('financingPayments').findOne({ _id: new ObjectId(paymentId) })
         if (payment) {
           const failedCount = await db.collection('financingPayments').countDocuments({
             financingPlanId: payment.financingPlanId,
