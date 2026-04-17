@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { usePlaidLink } from 'react-plaid-link'
+import { usePlaidLink, PlaidLinkOnSuccessMetadata } from 'react-plaid-link'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 
@@ -37,7 +37,7 @@ function PlaidLinkButton({ onSuccess: onLinkSuccess }: { onSuccess: () => void }
   }
 
   const onSuccess = useCallback(
-    async (publicToken: string, metadata: Record<string, unknown>) => {
+    async (publicToken: string, metadata: PlaidLinkOnSuccessMetadata) => {
       try {
         await fetch('/api/plaid/exchange-token', {
           method: 'POST',
